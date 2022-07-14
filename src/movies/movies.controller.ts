@@ -11,10 +11,11 @@ import {
 } from '@nestjs/common';
 import { Movie } from './entities/movies.entities';
 import { MoviesService } from './movies.service';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
-  constructor(private movieService: MoviesService) {}
+  constructor(private readonly movieService: MoviesService) {}
 
   @Get()
   getAll(): Movie[] {
@@ -29,22 +30,22 @@ export class MoviesController {
 
   // id가 제일 위에있으면 다른 get들이 작동하지않는다.
   @Get('/:id')
-  getOne(@Param('id') movieId: string): Movie {
+  getOne(@Param('id') movieId: number): Movie {
     return this.movieService.getOne(movieId);
   }
 
   @Post()
-  create(@Body() movieData) {
+  create(@Body() movieData: CreateMovieDto) {
     return this.movieService.create(movieData);
   }
 
   @Delete('/:id')
-  remove(@Param('id') movieDeleteId: string) {
+  remove(@Param('id') movieDeleteId: number) {
     return this.movieService.deleteOne(movieDeleteId);
   }
 
   @Patch('/:id')
-  patchMovies(@Param('id') moviePatchId: string, @Body() patchData) {
+  patchMovies(@Param('id') moviePatchId: number, @Body() patchData) {
     return this.movieService.update(moviePatchId, patchData);
   }
 
